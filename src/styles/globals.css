@@ -1,4 +1,17 @@
 @import "tailwindcss";
+/* 
+:root {
+  --gradient-gold: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-olive)
+  );
+  --gradient-red: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--color-primary)
+  );
+} */
 
 @theme {
   --color-primary: rgb(209, 169, 99);
@@ -25,7 +38,16 @@
   );
   --gradient-red: linear-gradient(
     90deg,
-    var(--color-accent),
-    var(--color-primary)
+    var(--color-primary),
+    var(--color-accent)
   );
+}
+
+@layer utilities {
+  .bg-gradient-gold {
+    background: var(--gradient-gold);
+  }
+  .bg-gradient-red {
+    background: var(--gradient-red);
+  }
 }
