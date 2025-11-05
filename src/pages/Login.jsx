@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Button from "../components/ButtonSubmit";
+import Button from "../components/Button";
 import Input from "../components/Input";
 import BackToHome from "../components/BackToHome";
 import WelcomeMsg from "../components/WelcomeMsg";
@@ -15,7 +15,9 @@ function Login() {
         <Link to="#" className="text-primary text-sm underline">
           Forgot Password?
         </Link>
-        <Button>Sign In &rarr;</Button>
+        <Button style="gradient" type="submit">
+          Sign In &rarr;
+        </Button>
         <p className="text-sm text-center">
           Don't have an account?{" "}
           <Link to="/register" className="text-primary">

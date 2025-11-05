@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Button from "../components/ButtonSubmit";
+import Button from "../components/Button";
 import Input from "../components/Input";
 import BackToHome from "../components/BackToHome";
 import WelcomeMsg from "../components/WelcomeMsg";
@@ -21,7 +21,9 @@ function Signup() {
           name="confirmPassword"
           type="password"
         />
-        <Button>Sign Up &rarr;</Button>
+        <Button style="gradient" type="submit">
+          Sign Up &rarr;
+        </Button>
         <p className="text-sm text-center">
           Have an account?{" "}
           <Link to="/login" className="text-primary">
