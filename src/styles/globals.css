@@ -1,17 +1,4 @@
 @import "tailwindcss";
-/* 
-:root {
-  --gradient-gold: linear-gradient(
-    90deg,
-    var(--color-primary),
-    var(--color-olive)
-  );
-  --gradient-red: linear-gradient(
-    90deg,
-    var(--color-accent),
-    var(--color-primary)
-  );
-} */
 
 @theme {
   --color-primary: rgb(209, 169, 99);
@@ -47,11 +34,20 @@
   .bg-gradient-gold {
     background: var(--gradient-gold);
   }
+
   .bg-gradient-red {
     background: var(--gradient-red);
+  }
+
+  .container {
+    @apply mx-auto;
   }
 }
 
 * {
   user-select: none;
+}
+
+.smooth-transition {
+  @apply transition-all duration-300;
 }
