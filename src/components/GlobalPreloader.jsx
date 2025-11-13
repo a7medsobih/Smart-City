@@ -8,7 +8,7 @@ function GlobalPreloader({ children }) {
     useLayoutEffect(() => {
         setIsLoading(true);
 
-        const timer = setTimeout(() => setIsLoading(false), 500);
+        const timer = setTimeout(() => setIsLoading(false), 400);
         return () => clearTimeout(timer);
     }, [location]);
 
