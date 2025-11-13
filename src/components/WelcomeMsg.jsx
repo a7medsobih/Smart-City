@@ -1,5 +1,4 @@
 import logo from '../assets/logo.jpeg'
-
 function WelcomeMsg({ msg }) {
   return (
     <section className="flex flex-col gap-3 items-center pt-10">
