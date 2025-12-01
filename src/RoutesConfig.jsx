@@ -17,6 +17,7 @@ import AdminProfile from "./features/admin/pages/AdminProfile";
 import GlobalPreloader from "./components/GlobalPreloader";
 import AdminProtectedRoute from "./AdminProtectedRoute";
 import ProtectedRoute from "./ProtectedRoute";
+import AdminNotifications from "./features/admin/pages/AdminNotifications";
 
 function RoutesConfig() {
   return (
@@ -44,6 +45,7 @@ function RoutesConfig() {
           <Route path="complaints" element={<AdminComplaints />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="profile" element={<AdminProfile />} />
+          <Route path="notifications" element={<AdminNotifications />} />
         </Route>
         {/* Routes For Users */}
         <Route

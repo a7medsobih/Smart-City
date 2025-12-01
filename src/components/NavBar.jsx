@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { adminNavItems, userNavItems } from "../utils/constants";
-import { LogOut, Menu, User, X } from "lucide-react";
+import { Bell, LogOut, Menu, User, User2, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
@@ -33,7 +33,17 @@ function NavBar() {
             </div>
           </Link>
 
-          <div className="md:hidden flex items-center gap-4 text-gray-700">
+          <div className="lg:hidden flex items-center gap-4 text-gray-700">
+            <NavLink
+              to="notifications"
+              className={({ isActive }) =>
+                `flex gap-2 items-center smooth-transition hover:scale-110 ${isActive ? "text-primary" : ""
+                }`
+              }
+            >
+              <Bell size={20} />
+            </NavLink>
+
             <NavLink
               to="profile"
               className={({ isActive }) =>
@@ -62,7 +72,7 @@ function NavBar() {
           </div>
 
           {/* Links Desktop */}
-          <nav className="hidden md:flex">
+          <nav className="hidden lg:flex">
             <ul className="flex gap-8 text-gray-700">
               {navItems.map((item) => (
                 <li key={item.path}>
@@ -82,19 +92,29 @@ function NavBar() {
               ))}
             </ul>
           </nav>
-          <nav className="hidden md:flex">
-            <ul className="flex items-center gap-3 text-gray-700 cursor-pointer">
-              <li className="hover:text-primary">
+          <nav className="hidden lg:flex">
+            <ul className="flex items-center gap-4 text-gray-700 cursor-pointer">
+              <li className="hover:text-primary smooth-transition hover:scale-110">
+                <NavLink
+                  to="notifications"
+                  className={({ isActive }) =>
+                    ` ${isActive ? "text-primary" : ""}`
+                  }
+                >
+                  <Bell size={20} />
+                </NavLink>
+              </li>
+              <li className="hover:text-primary smooth-transition hover:scale-110">
                 <NavLink
                   to="profile"
                   className={({ isActive }) =>
-                    `smooth-transition ${isActive ? "text-primary" : ""}`
+                    ` ${isActive ? "text-primary" : ""}`
                   }
                 >
                   <User size={20} />
                 </NavLink>
               </li>
-              <li className="hover:text-primary">
+              <li className="hover:text-primary smooth-transition hover:scale-110">
                 <NavLink to="/login" onClick={logout}>
                   <LogOut size={20} />
                 </NavLink>
@@ -123,8 +143,8 @@ export default NavBar;
 
 function MobileMenu({ navItems }) {
   return (
-    <div className="shadow-md shadow-black/10 rounded-b-xl bg-white w-[90%] mx-auto top-full flex flex-col py-5 px-5 md:hidden">
-      <nav className="md:hidden block text-gray-700">
+    <div className="shadow-md shadow-black/10 rounded-b-xl bg-white w-[80%] mx-auto top-full flex flex-col py-5 px-5 lg:hidden">
+      <nav className="lg:hidden block text-gray-700">
         <ul className="flex flex-col w-full gap-3">
           {navItems.map((item) => (
             <NavLink

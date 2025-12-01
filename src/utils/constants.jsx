@@ -4,7 +4,7 @@ export const userNavItems = [
   { path: "dashboard", label: "Dashboard", end: true },
   { path: "dashboard/complaints", label: "Complaints" },
   { path: "dashboard/utilities", label: "Utilities" },
-  { path: "dashboard/notifications", label: "Notifications" },
+  // { path: "dashboard/notifications", label: "Notifications" },
 ];
 
 export const adminNavItems = [
