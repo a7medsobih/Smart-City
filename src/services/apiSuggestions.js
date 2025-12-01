@@ -1,7 +1,7 @@
 import api from "./axiosInterceptors";
 
-export async function getAllSuggestions(citizenId) {
-  const res = await api.get(`/api/Suggestions/citizen/${citizenId}`);
+export async function getAllSuggestions() {
+  const res = await api.get(`/api/suggestions/my`);
   return res.data;
 }
 

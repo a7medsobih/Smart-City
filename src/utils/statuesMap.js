@@ -1,6 +1,7 @@
 export function statusMap(status) {
   switch (status) {
     case 0:
+    case "Pending":
       return {
         label: "Pending",
         bg: "bg-yellow-100",
@@ -9,6 +10,7 @@ export function statusMap(status) {
       };
 
     case 1:
+    case "In Progress":
       return {
         label: "In Progress",
         bg: "bg-blue-100",
@@ -17,6 +19,7 @@ export function statusMap(status) {
       };
 
     case 2:
+    case "Resolved":
       return {
         label: "Resolved",
         bg: "bg-green-100",
@@ -25,6 +28,7 @@ export function statusMap(status) {
       };
 
     case 3:
+    case "Rejected":
       return {
         label: "Rejected",
         bg: "bg-red-100",

@@ -7,7 +7,7 @@ import EmptyList from "./EmptyList";
 
 function MyComplaints() {
   const { complaints, isLoading } = useAllComplaints();
-  console.log(complaints);
+
   if (isLoading) return <GlobalPreloader />;
 
   if (complaints.length === 0) return <EmptyList msg="complaints" />;

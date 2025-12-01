@@ -6,8 +6,6 @@ import EmptyList from "./EmptyList";
 
 function MySuggestions() {
   const { suggestions, isLoading } = useAllSuggestions();
-  console.log(suggestions);
-
   if (isLoading) return <GlobalPreloader />;
 
   if (suggestions.length === 0) return <EmptyList msg="suggestions" />;
@@ -20,9 +18,9 @@ function MySuggestions() {
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
       <div className="flex flex-col gap-4 rounded-xl bg-white p-8 border border-primary-light/50 shadow-md">
-        <SuggestionCard />
-        <SuggestionCard />
-        <SuggestionCard />
+        {suggestions.map((item) => (
+          <SuggestionCard item={item} key={item?.id} />
+        ))}
       </div>
     </motion.div>
   );

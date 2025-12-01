@@ -13,7 +13,7 @@ function ComplaintCard({ complaint }) {
             className="border border-primary-light/50 rounded-xl p-3 shadow text-primary"
           />
           <div>
-            <h3 className="text-xl">{complaint?.title}</h3>
+            <h3 className="text-xl font-medium">{complaint?.title}</h3>
             <p className="text-gray-600">
               {new Date(complaint?.dateSubmitted).toLocaleString()}
             </p>

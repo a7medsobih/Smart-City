@@ -17,8 +17,7 @@ export function useLogin() {
       });
     },
     onError: (error) => {
-      console.log(error.message);
-      toast.error("Error: " + error.message);
+      toast.error("Error: " + error?.response?.data.message);
       console.error("Error:", error?.response?.data || error.message);
     },
   });

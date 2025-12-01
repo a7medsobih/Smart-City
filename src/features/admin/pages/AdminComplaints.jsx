@@ -6,7 +6,6 @@ import GlobalPreloader from "../../../components/GlobalPreloader";
 import api from "../../../services/axiosInterceptors";
 
 const AdminComplaints = () => {
-
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
@@ -58,83 +57,80 @@ const AdminComplaints = () => {
   const fetchComplaints = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/api/admin/complaints');
+      const response = await api.get("/api/admin/complaints");
       const data = response.data;
 
       // ✅ تحويل كامل للحالات
       const statusMap = {
-        0: 'Pending',
-        1: 'In Progress',
-        2: 'Resolved',
-        3: 'Rejected'
+        0: "Pending",
+        1: "In Progress",
+        2: "Resolved",
+        3: "Rejected",
       };
 
       // تحديث البيانات لتعيين الحالة الافتراضية
-      const updatedData = data.map(complaint => ({
+      const updatedData = data.map((complaint) => ({
         ...complaint,
-        status: statusMap[complaint.status] || 'Pending', // تحويل الرقم لنص
-        dateSubmitted: complaint.dateSubmitted || 'N/A'
+        status: statusMap[complaint.status] || "Pending", // تحويل الرقم لنص
+        dateSubmitted: complaint.dateSubmitted || "N/A",
       }));
 
-      console.log('📦 Complaints Data:', updatedData); // طباعة البيانات المحدثة
+      console.log("📦 Complaints Data:", updatedData); // طباعة البيانات المحدثة
       setComplaints(updatedData); // تحديث الحالة المحلية
-
     } catch (error) {
-      console.error('❌ API Error:', error);
+      console.error("❌ API Error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const updateComplaintStatus = async (complaintId, newStatus) => {
+  const updateComplaintStatus = async (complaint, newStatus) => {
     try {
       const statusMapping = {
-        'Pending': 0,
-        'In Progress': 1,
-        'Resolved': 2,
-        'Rejected': 3
+        Pending: 0,
+        "In Progress": 1,
+        Resolved: 2,
+        Rejected: 3,
       };
 
-      const statusValue = statusMapping[newStatus]; // تحويل النص إلى القيمة الصحيحة
-      console.log('Sending data:', { status: statusValue, updatedComplaint: true });
+      const statusValue = statusMapping[newStatus];
+      const complaintId = complaint?.id;
 
-      await api.put(`/api/admin/complaints/${complaintId}`, {
+      await api.put(`/api/admin/complaints/${complaintId}/status`, {
         status: statusValue,
-        updatedComplaint: true // إضافة الحقل المطلوب
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
       });
 
-      console.log(`Complaint with ID ${complaintId} updated successfully to status: ${newStatus}`);
-
-      setComplaints(prev => prev.map(comp =>
-        comp.id === complaintId ? { ...comp, status: newStatus } : comp
-      ));
+      setComplaints((prev) =>
+        prev.map((comp) =>
+          comp.id === complaintId ? { ...comp, status: newStatus } : comp
+        )
+      );
 
       if (selectedComplaint?.id === complaintId) {
-        setSelectedComplaint(prev => ({ ...prev, status: newStatus }));
+        setSelectedComplaint((prev) => ({ ...prev, status: newStatus }));
       }
     } catch (error) {
-      console.error('Error updating status:', error.response?.data || error.message);
+      console.error(
+        "Error updating status:",
+        error.response?.data || error.message
+      );
     }
   };
 
   const deleteComplaint = async (complaintId) => {
-    if (window.confirm('Are you sure you want to delete this complaint?')) {
+    if (window.confirm("Are you sure you want to delete this complaint?")) {
       try {
         // حذف الشكوى من الـ backend
         await api.delete(`/api/admin/complaints/${complaintId}`);
         console.log(`Complaint with ID ${complaintId} deleted successfully`);
 
         // تحديث الحالة المحلية
-        setComplaints(prev => prev.filter(comp => comp.id !== complaintId));
+        setComplaints((prev) => prev.filter((comp) => comp.id !== complaintId));
         if (selectedComplaint?.id === complaintId) {
           closeModal();
         }
       } catch (error) {
-        console.error('Error deleting complaint:', error);
+        console.error("Error deleting complaint:", error);
       }
     }
   };
@@ -154,7 +150,7 @@ const AdminComplaints = () => {
   }, []);
 
   return (
-    <div className='py-10'>
+    <div className="py-10">
       <div className="bg-white/60 border border-accent-light/20 rounded-lg p-6 shadow-md">
         {/* Header */}
         <div className="flex justify-between items-center mb-10">
@@ -163,7 +159,8 @@ const AdminComplaints = () => {
             Complaints Management
           </h2>
           <div className="text-sm text-gray-500">
-            Total Complaints: <span className="font-semibold">{complaints.length}</span>
+            Total Complaints:{" "}
+            <span className="font-semibold">{complaints.length}</span>
           </div>
         </div>
 
@@ -189,6 +186,6 @@ const AdminComplaints = () => {
       </div>
     </div>
   );
-}
+};
 
-export default AdminComplaints
+export default AdminComplaints;

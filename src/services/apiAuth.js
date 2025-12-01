@@ -8,6 +8,6 @@ export async function register(data) {
 
 export async function login(data) {
   const res = await axios.post(`${BASE_URL}/api/Authentication/login`, data);
-  console.log(res);
+  // console.log(res);
   return res.data;
 }
