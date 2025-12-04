@@ -3,9 +3,17 @@ import Toggler from "../components/complaints/Toggler";
 import SubmitNew from "../components/complaints/SubmitNew";
 import MyComplaints from "../components/complaints/MyComplaints";
 import MySuggestions from "../components/complaints/MySuggestions";
+import Tabs from "../../../components/Tabs";
 
 function UserComplaints() {
   const [content, setContent] = useState("new");
+
+  const myToggler = [
+    { id: "new", label: "Submit New" },
+    { id: "complaints", label: "My Complaints" },
+    { id: "suggestions", label: "My Suggestions" }
+  ];
+
   return (
     <div>
       <header>
@@ -15,7 +23,14 @@ function UserComplaints() {
         </p>
       </header>
       <main className="mb-4">
-        <Toggler content={content} setContent={setContent} />
+        {/* <Toggler content={content} setContent={setContent} /> */}
+        <Tabs
+          padding="px-2"
+          fontSize="text-sm"
+          tabs={myToggler}
+          activeTab={content}
+          onChange={setContent}
+        />
         {content === "new" && <SubmitNew setContent={setContent} />}
         {content === "complaints" && <MyComplaints />}
         {content === "suggestions" && <MySuggestions />}

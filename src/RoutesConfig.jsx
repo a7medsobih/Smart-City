@@ -11,13 +11,15 @@ import Utilities from "./features/users/pages/Utilities";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import UserComplaints from "./features/users/pages/UserComplaints";
-import AdminComplaints from "./features/admin/pages/AdminComplaints";
 import UserProfile from "./features/users/pages/UserProfile";
 import AdminProfile from "./features/admin/pages/AdminProfile";
 import GlobalPreloader from "./components/GlobalPreloader";
 import AdminProtectedRoute from "./AdminProtectedRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminNotifications from "./features/admin/pages/AdminNotifications";
+// import SuggestionsPage from "./features/admin/pages/AdminSuggestions";
+// import AdminComplaints from "./features/admin/pages/AdminComplaints";
+import AdminComplainsAndSuggestions from "./features/admin/pages/AdminComplains&Suggestions";
 
 function RoutesConfig() {
   return (
@@ -42,7 +44,7 @@ function RoutesConfig() {
         >
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />
-          <Route path="complaints" element={<AdminComplaints />} />
+          <Route path="complaints" element={<AdminComplainsAndSuggestions />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="profile" element={<AdminProfile />} />
           <Route path="notifications" element={<AdminNotifications />} />

@@ -5,6 +5,7 @@ import AnalysisSection from "../components/utilities/AnalysisSection";
 import IssueCTA from "../components/utilities/IssueCTA";
 import { useAuth } from "../../../context/AuthContext";
 import { getMyBills, payBill } from "../../../services/apiBills";
+import GlobalPreloader from "../../../components/GlobalPreloader";
 
 const STAT_CARDS = [
   { title: "Total This Month", value: 850, delta: "-12%", trend: "down" },
@@ -99,8 +100,8 @@ function Utilities() {
               icon: b.type?.toLowerCase().includes("water")
                 ? "💧"
                 : b.type?.toLowerCase().includes("gas")
-                ? "🔥"
-                : "⚡",
+                  ? "🔥"
+                  : "⚡",
             }))
           );
         } else {
@@ -140,8 +141,8 @@ function Utilities() {
               icon: b.type?.toLowerCase().includes("water")
                 ? "💧"
                 : b.type?.toLowerCase().includes("gas")
-                ? "🔥"
-                : "⚡",
+                  ? "🔥"
+                  : "⚡",
             }))
           );
         } else {
@@ -171,9 +172,7 @@ function Utilities() {
 
         {/* Bills */}
         {loading ? (
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm text-gray-500">
-            Loading bills...
-          </div>
+          <GlobalPreloader />
         ) : (
           <BillsSection bills={bills} onPay={handlePay} />
         )}

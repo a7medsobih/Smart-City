@@ -1,7 +1,10 @@
+// StatusDropdown.jsx
 import Select from "react-select";
 import { Clock, RefreshCw, Check, Lock } from "lucide-react";
 
-const StatusSelect = ({ complaint, onUpdateStatus }) => {
+const StatusDropdown = ({ item, onUpdateStatus, }) => {
+  if (!item) return null; // 🔥 منع الكسر لو item لسه محمّلش
+
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
@@ -10,8 +13,6 @@ const StatusSelect = ({ complaint, onUpdateStatus }) => {
         return "border-blue-300";
       case "Resolved":
         return "border-green-300";
-      // case "Closed":
-      //   return "border-gray-300";
       case "Rejected":
         return "border-red-300";
       default:
@@ -20,32 +21,12 @@ const StatusSelect = ({ complaint, onUpdateStatus }) => {
   };
 
   const statusOptions = [
-    {
-      value: "Pending",
-      label: "Pending",
-      color: "yellow",
-    },
-    {
-      value: "In Progress",
-      label: "In Progress",
-      color: "blue",
-    },
-    {
-      value: "Resolved",
-      label: "Resolved",
-      color: "green",
-    },
-    // {
-    //     value: 'Closed',
-    //     label: 'Closed',
-    //     color: 'gray'
-    // },
-    {
-      value: "Rejected",
-      label: "Rejected",
-      color: "red",
-    },
+    { value: "Pending", label: "Pending" },
+    { value: "In Progress", label: "In Progress" },
+    { value: "Resolved", label: "Resolved" },
+    { value: "Rejected", label: "Rejected" },
   ];
+
   const customOptions = statusOptions.map((option) => ({
     value: option.value,
     label: (
@@ -59,12 +40,12 @@ const StatusSelect = ({ complaint, onUpdateStatus }) => {
   return (
     <Select
       options={customOptions}
-      value={customOptions.find((opt) => opt.value === complaint.status)}
+      value={customOptions.find((opt) => opt.value === item?.status) || null}
       onChange={(selectedOption) => {
-        onUpdateStatus(complaint, selectedOption.value);
+        onUpdateStatus(item, selectedOption.value);
       }}
       className={`text-xs font-medium rounded-md border transition-all duration-200 cursor-pointer min-w-[150px] ${getStatusColor(
-        complaint.status
+        item?.status
       )}`}
       menuPortalTarget={document.body}
       menuPosition="fixed"
@@ -92,8 +73,6 @@ const getStatusIcon = (status) => {
       return <RefreshCw className="w-4 h-4 text-blue-600" />;
     case "Resolved":
       return <Check className="w-4 h-4 text-green-600" />;
-    // case "Closed":
-    //   return <Lock className="w-4 h-4 text-gray-600" />;
     case "Rejected":
       return <Lock className="w-4 h-4 text-red-600" />;
     default:
@@ -101,4 +80,4 @@ const getStatusIcon = (status) => {
   }
 };
 
-export default StatusSelect;
+export default StatusDropdown;

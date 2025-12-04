@@ -8,63 +8,23 @@ const AdminNotifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [newNotification, setNewNotification] = useState({ citizenId: "", message: "" });
+    const [newNotification, setNewNotification] = useState({
+        citizenId: "",
+        message: ""
+    });
     const [apiError, setApiError] = useState(false);
 
-    // بيانات تجريبية ثابتة
-    const demoNotifications = [
-        {
-            id: 1,
-            citizenId: 5,
-            citizenName: "Ahmed Mohamed",
-            message: "Your electricity bill of EGP 450 is due on December 15, 2024",
-            sentDate: "2024-12-01T10:00:00Z"
-        },
-        {
-            id: 2,
-            citizenId: 8,
-            citizenName: "Sara Ali",
-            message: "Your complaint CMP-2024-10249 is now in progress",
-            sentDate: "2024-12-01T14:30:00Z"
-        },
-        {
-            id: 3,
-            citizenId: 12,
-            citizenName: "Mohamed Hassan",
-            message: "Water supply maintenance scheduled for your area on Dec 5",
-            sentDate: "2024-11-30T09:15:00Z"
-        },
-        {
-            id: 4,
-            citizenId: 15,
-            citizenName: "Fatma Mahmoud",
-            message: "New public park opening ceremony this Friday",
-            sentDate: "2024-11-28T16:20:00Z"
-        },
-        {
-            id: 5,
-            citizenId: 5,
-            citizenName: "Ahmed Mohamed",
-            message: "Payment successful for water bill #WB-78910",
-            sentDate: "2024-11-27T11:45:00Z"
-        }
-    ];
-
-    // جلب البيانات
+    // جلب جميع الإشعارات
     const fetchAllNotifications = async () => {
         setLoading(true);
         setApiError(false);
         try {
-
             const response = await api.get('/api/admin/notifications');
             setNotifications(response.data);
-            console.log('✅ API response received');
-
+            console.log('✅ Notifications loaded:', response.data);
         } catch (error) {
-            console.error('❌ API Error:', error);
+            console.error('❌ API Error fetching notifications:', error);
             setApiError(true);
-            // استخدام البيانات التجريبية في حالة الخطأ
-            setNotifications(demoNotifications);
         } finally {
             setLoading(false);
         }
@@ -72,30 +32,36 @@ const AdminNotifications = () => {
 
     // إنشاء إشعار جديد
     const createNotification = async () => {
-
-        // إضافة notification جديدة (محلياً)
-        const newNotif = {
-            id: notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1,
-            citizenId: parseInt(newNotification.citizenId) || 99,
-            citizenName: `Citizen ${newNotification.citizenId}`,
-            message: newNotification.message,
-            sentDate: new Date().toISOString()
-        };
-
-        setNotifications([newNotif, ...notifications]);
-        setShowCreateModal(false);
-        setNewNotification({ citizenId: "", message: "" });
-
-        try {
-            await api.post('/api/admin/notifications', {
-                citizenId: parseInt(newNotification.citizenId),
-                message: newNotification.message
-            });
-            fetchAllNotifications(); // Refresh data
-        } catch (error) {
-            console.error('Error creating notification:', error);
+        // التحقق من البيانات
+        if (!newNotification.citizenId || !newNotification.message.trim()) {
+            alert('Please enter Citizen ID and message');
+            return;
         }
 
+        setLoading(true);
+        try {
+            const payload = {
+                citizenId: parseInt(newNotification.citizenId),
+                message: newNotification.message.trim()
+            };
+
+            const response = await api.post('/api/admin/notifications', payload);
+
+            // تحديث القائمة بإضافة الإشعار الجديد في الأعلى
+            setNotifications(prev => [response.data, ...prev]);
+
+            // إغلاق المودال وتهيئة الحقول
+            setShowCreateModal(false);
+            setNewNotification({ citizenId: "", message: "" });
+
+            console.log('✅ Notification created:', response.data);
+
+        } catch (error) {
+            console.error('❌ Error creating notification:', error);
+            alert('Failed to create notification. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     // حذف إشعار
@@ -104,22 +70,53 @@ const AdminNotifications = () => {
             return;
         }
 
-        // حذف محلي
-        setNotifications(notifications.filter(n => n.id !== id));
-
-        // TODO: Uncomment when API is fixed
         try {
             await api.delete(`/api/admin/notifications/${id}`);
+
+            // تحديث القائمة محلياً بعد الحذف الناجح
+            setNotifications(prev => prev.filter(n => n.id !== id));
+
+            console.log('✅ Notification deleted:', id);
+
         } catch (error) {
-            console.error('Error deleting notification:', error);
-            alert('Error deleting notification. Please try again.');
+            console.error('❌ Error deleting notification:', error);
+            alert('Failed to delete notification. Please try again.');
         }
     };
 
+    // جلب تفاصيل إشعار محدد (إذا احتجناها مستقبلاً)
+    const fetchNotificationDetails = async (id) => {
+        try {
+            const response = await api.get(`/api/admin/notifications/${id}`);
+            console.log('📋 Notification details:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching notification details:', error);
+            return null;
+        }
+    };
 
     useEffect(() => {
         fetchAllNotifications();
     }, []);
+
+    // دالة مساعدة لتنسيق التاريخ
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    // دالة للحصول على اسم المواطن (افتراضي إذا لم يكن موجوداً في الـ API)
+    const getCitizenName = (citizenId) => {
+        // في التطبيق الحقيقي، هنا يمكن جلب اسم المواطن من API آخر
+        return `Citizen #${citizenId}`;
+    };
 
     return (
         <div className="p-6">
@@ -134,21 +131,14 @@ const AdminNotifications = () => {
                         Manage and send notifications to citizens
                     </p>
                 </div>
-                <div className="flex items-center gap-4">
-                    {apiError && (
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-yellow-100 text-yellow-800 text-sm rounded-lg border border-yellow-300">
-                            <AlertCircle className="w-4 h-4" />
-                            <span>Demo Mode - API Unavailable</span>
-                        </div>
-                    )}
-                    <button
-                        onClick={() => setShowCreateModal(true)}
-                        className="flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary-dark transition-all duration-200 hover:shadow-md"
-                    >
-                        <Plus className="w-4 h-4" />
-                        <span>Create Notification</span>
-                    </button>
-                </div>
+                <button
+                    onClick={() => setShowCreateModal(true)}
+                    className="flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary-dark transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={loading}
+                >
+                    <Plus className="w-4 h-4" />
+                    <span>{loading ? 'Loading...' : 'Create Notification'}</span>
+                </button>
             </div>
 
             {/* Stats */}
@@ -156,6 +146,14 @@ const AdminNotifications = () => {
                 <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                     <div className="text-sm text-gray-600">Total Notifications</div>
                     <div className="text-2xl font-bold text-gray-800">{notifications.length}</div>
+                </div>
+                <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                    <div className="text-sm text-gray-600">Last Notification</div>
+                    <div className="text-lg font-semibold text-gray-800">
+                        {notifications.length > 0
+                            ? formatDate(notifications[0].sentDate)
+                            : 'No notifications'}
+                    </div>
                 </div>
             </div>
 
@@ -166,23 +164,22 @@ const AdminNotifications = () => {
                 </div>
             ) : (
                 <>
-                    {/* Instructions */}
+                    {/* Error Message */}
                     {apiError && (
-                        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                            <div className="flex items-start">
-                                <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 mr-2 shrink-0" />
+                        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <div className="flex items-center">
+                                <AlertCircle className="w-5 h-5 text-red-500 mr-2 shrink-0" />
                                 <div>
-                                    <h3 className="font-medium text-blue-800">Using Demo Data</h3>
-                                    <p className="text-blue-700 text-sm mt-1">
-                                        The notifications API is currently unavailable. You're viewing demo data.
-                                        All actions (create, delete) will only affect the local demo data.
+                                    <h3 className="font-medium text-red-800">Connection Error</h3>
+                                    <p className="text-red-700 text-sm mt-1">
+                                        Unable to connect to the server. Please check your connection and try again.
                                     </p>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {/* Table */}
+                    {/* Notifications List */}
                     <div className="bg-white rounded-lg shadow overflow-hidden">
                         {notifications.length === 0 ? (
                             <div className="text-center py-12">
@@ -207,6 +204,9 @@ const AdminNotifications = () => {
                                             Message
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Date Sent
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
@@ -226,19 +226,27 @@ const AdminNotifications = () => {
                                                             ID: {notification.citizenId}
                                                         </div>
                                                         <div className="text-sm text-gray-500">
-                                                            {notification.citizenName}
+                                                            {getCitizenName(notification.citizenId)}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="text-sm text-gray-900 max-w-md">{notification.message}</div>
+                                                <div className="text-sm text-gray-900 max-w-md">
+                                                    {notification.message}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="text-sm text-gray-500">
+                                                    {formatDate(notification.sentDate)}
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <button
                                                     onClick={() => deleteNotification(notification.id)}
-                                                    className="text-red-600 hover:text-red-900 hover:bg-red-50 p-2 rounded transition-colors"
+                                                    className="text-red-600 hover:text-red-900 hover:bg-red-50 p-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                                     title="Delete notification"
+                                                    disabled={loading}
                                                 >
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
@@ -260,8 +268,9 @@ const AdminNotifications = () => {
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-xl font-bold text-gray-900">Create New Notification</h3>
                                 <button
-                                    onClick={() => setShowCreateModal(false)}
-                                    className="text-gray-400 hover:text-gray-600 text-2xl"
+                                    onClick={() => !loading && setShowCreateModal(false)}
+                                    className="text-gray-400 hover:text-gray-600 text-2xl disabled:opacity-50"
+                                    disabled={loading}
                                 >
                                     &times;
                                 </button>
@@ -270,7 +279,7 @@ const AdminNotifications = () => {
                             <div className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Citizen ID
+                                        Citizen ID *
                                     </label>
                                     <input
                                         type="number"
@@ -279,16 +288,20 @@ const AdminNotifications = () => {
                                             ...newNotification,
                                             citizenId: e.target.value
                                         })}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
-                                        placeholder="Enter Citizen ID (e.g., 123)"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all disabled:opacity-50"
+                                        placeholder="Enter Citizen ID"
                                         min="1"
                                         required
+                                        disabled={loading}
                                     />
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        Enter the ID of the citizen to receive this notification
+                                    </p>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Message
+                                        Message *
                                     </label>
                                     <textarea
                                         value={newNotification.message}
@@ -296,40 +309,32 @@ const AdminNotifications = () => {
                                             ...newNotification,
                                             message: e.target.value
                                         })}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all h-40 resize-none"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all h-40 resize-none disabled:opacity-50"
                                         placeholder="Type your notification message here..."
+                                        maxLength={500}
                                         required
+                                        disabled={loading}
                                     />
                                     <div className="text-xs text-gray-500 mt-2">
                                         {newNotification.message.length}/500 characters
                                     </div>
                                 </div>
-
-                                {apiError && (
-                                    <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                                        <div className="flex items-center">
-                                            <AlertCircle className="w-4 h-4 text-yellow-600 mr-2" />
-                                            <span className="text-sm text-yellow-700">
-                                                Will be saved locally (API unavailable)
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
 
                             <div className="flex gap-3 justify-end mt-8 pt-6 border-t border-gray-200">
                                 <button
-                                    onClick={() => setShowCreateModal(false)}
-                                    className="px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors w-24"
+                                    onClick={() => !loading && setShowCreateModal(false)}
+                                    className="px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors w-24 disabled:opacity-50"
+                                    disabled={loading}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={createNotification}
-                                    className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors w-24"
-                                    disabled={!newNotification.citizenId || !newNotification.message.trim()}
+                                    className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors w-24 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled={loading || !newNotification.citizenId || !newNotification.message.trim()}
                                 >
-                                    Send
+                                    {loading ? 'Sending...' : 'Send'}
                                 </button>
                             </div>
                         </div>
