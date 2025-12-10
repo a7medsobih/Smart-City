@@ -8,7 +8,7 @@ function IssueCTA({ loading, onClick }) {
       <h3 className="text-lg font-semibold text-slate-900">Found an Issue?</h3>
       <p className="text-gray-500 mt-1">Report problems with your utilities and we'll address them promptly</p>
       <div className="max-w-xl mx-auto mt-3">
-        <Button onClick={onClick}>{loading ? <SpinnerMini /> : "Report Utility Issue"}</Button>
+        <Button style="light" onClick={onClick}>{loading ? <SpinnerMini /> : "Report Utility Issue"}</Button>
       </div>
     </section>
   );

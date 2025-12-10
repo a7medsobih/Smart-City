@@ -5,6 +5,7 @@ import SearchBar from "../components/adminUsers/SearchBar";
 import GlobalPreloader from "../../../components/GlobalPreloader";
 import UserDetailsModal from "../components/adminUsers/UserDetailsModal";
 import Swal from "sweetalert2";
+import { UserCog } from "lucide-react";
 
 export default function Users() {
   const [search, setSearch] = useState("");
@@ -52,10 +53,12 @@ export default function Users() {
 
   return (
     <div className="p-8">
-      <div className="mb-4 flex justify-between flex-col lg:flex-row">
-        <h1 className="text-2xl font-bold mb-6 text-primary ">
+
+      <div className="flex justify-between items-center flex-col md:flex-row mb-6 gap-4">
+        <h2 className="text-2xl  flex items-center gap-2">
+          <UserCog className="w-8 h-8 text-primary" />
           User Management
-        </h1>
+        </h2>
         <SearchBar value={search} onChange={setSearch} />
       </div>
 

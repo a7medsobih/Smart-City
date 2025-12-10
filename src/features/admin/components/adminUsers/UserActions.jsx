@@ -2,7 +2,7 @@ import { Eye, Trash2, ArrowUpCircle } from "lucide-react";
 
 export default function UserActions({ onView, onPromote, onDelete }) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       <Eye className="cursor-pointer text-yellow-600" onClick={onView} />
 
       {/* <ArrowUpCircle

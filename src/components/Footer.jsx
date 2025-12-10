@@ -109,7 +109,7 @@ const Footer = () => {
                         <p className="text-gray-600  text-center  mt-2 md:mt-0">
                             Designed by{" "}
                             <a
-                                href="#"
+                                href="https://github.com/MahmoudAbdou0/Smart-City"
                                 className="text-accent font-semibold hover:underline transition-colors"
                             >
                                 Querydux

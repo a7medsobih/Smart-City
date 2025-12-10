@@ -42,11 +42,11 @@ export default function ComplaintTable({ complaints, onViewDetails, onDeleteComp
 
       <td className="px-6 py-6">
         <div className="flex justify-center space-x-2">
-          <button onClick={() => onViewDetails(complaint)} className="flex gap-2 items-center px-3 py-2 text-xs font-medium text-primary bg-light rounded-lg hover:bg-primary hover:text-white transition">
+          <button onClick={() => onViewDetails(complaint)} className="flex gap-2 items-center px-3 py-2 text-xs font-medium text-primary bg-light rounded-lg hover:bg-primary hover:text-white smooth-transition cursor-pointer">
             <Eye className="w-4 h-4" /> View
           </button>
-          <button onClick={() => onDeleteComplaint(complaint.id)} className="flex gap-2 items-center px-3 py-2 text-xs font-medium text-accent bg-accent/20 rounded-lg hover:bg-accent hover:text-white transition">
-            <Trash className="w-4 h-4" /> Delete
+          <button onClick={() => onDeleteComplaint(complaint.id)} className=" px-3 py-2 text-xs font-medium text-accent bg-accent/20 rounded-lg hover:bg-accent hover:text-white smooth-transition cursor-pointer">
+            <Trash className="w-4 h-4" />
           </button>
         </div>
       </td>

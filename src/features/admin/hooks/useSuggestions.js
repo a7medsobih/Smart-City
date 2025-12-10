@@ -1,6 +1,7 @@
 // useSuggestions.js
 import { useState, useEffect } from "react";
 import api from "../../../services/axiosInterceptors";
+import { toast } from "react-toastify";
 
 export default function useSuggestions() {
     const [suggestions, setSuggestions] = useState([]);
@@ -31,6 +32,7 @@ export default function useSuggestions() {
     const deleteSuggestion = async (id) => {
         await api.delete(`/api/admin/suggestion/${id}`);
         setSuggestions((prev) => prev.filter((s) => s.id !== id));
+        toast.success("Suggestion deleted successfully!");
     };
 
     useEffect(() => {

@@ -1,5 +1,5 @@
 import { TrendingUp } from "lucide-react";
-import RevenuePerformanceChart from './components/revenue-and-performance-chart'
+import RevenuePerformanceChart from '../components/analytics/revenue-and-performance-chart'
 
 function Analytics() {
   return (

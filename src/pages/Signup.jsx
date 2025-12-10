@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { validations } from "../features/auth/validations";
 import { useRegister } from "../features/auth/useRegister";
 import SpinnerMini from "../components/SpinnerMini";
+import Footer from "../components/Footer";
+import { ArrowRight } from "lucide-react";
 
 function Signup() {
   const { mutate, isLoading } = useRegister();
@@ -30,7 +32,7 @@ function Signup() {
       <WelcomeMsg msg="Let's Get Started" />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-light shadow-md shadow-black/25 border border-primary-light rounded-lg max-w-sm m-auto p-6 mt-10"
+        className="bg-white shadow-md shadow-black/25 border border-color rounded-lg max-w-sm m-auto p-6 my-10 smooth-transition"
       >
         <Input
           label="Name"
@@ -88,8 +90,12 @@ function Signup() {
           options={validations.confirmPassword(watch)}
           error={errors?.confirmPassword?.message}
         />
-        <Button disabled={loading} style="gradient" type="submit">
-          {loading ? <SpinnerMini /> : <span>Sign Up &rarr;</span>}
+        <Button disabled={loading} style="gradient" type="submit" className="group">
+          {loading ? <SpinnerMini /> :
+            <span>
+              Sign Up
+              <ArrowRight size={18} className="inline ms-2 transition-transform duration-300 group-hover:translate-x-2" />
+            </span>}
         </Button>
         <p className="text-sm text-center">
           Have an account?{" "}
@@ -98,6 +104,7 @@ function Signup() {
           </Link>
         </p>
       </form>
+      <Footer />
     </>
   );
 }

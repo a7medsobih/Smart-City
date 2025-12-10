@@ -16,10 +16,8 @@ import AdminProfile from "./features/admin/pages/AdminProfile";
 import GlobalPreloader from "./components/GlobalPreloader";
 import AdminProtectedRoute from "./AdminProtectedRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import AdminNotifications from "./features/admin/pages/AdminNotifications";
-// import SuggestionsPage from "./features/admin/pages/AdminSuggestions";
-// import AdminComplaints from "./features/admin/pages/AdminComplaints";
 import AdminComplainsAndSuggestions from "./features/admin/pages/AdminComplains&Suggestions";
+import AdminNotifications from "./features/admin/pages/AdminNotifications";
 
 function RoutesConfig() {
   return (

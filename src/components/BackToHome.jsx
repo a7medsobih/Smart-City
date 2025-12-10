@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
+import Button from "./Button";
+import { ArrowLeft } from "lucide-react";
 
 function BackToHome() {
   return (
-    <Link to="/" className="block p-4  hover:text-primary text-primary-dark">
-      &larr; Back to home
-    </Link>
+    <Button style="light" to="/" className="inline-block mx-6 group">
+      <ArrowLeft size={18} className="inline me-2 transition-transform duration-300 group-hover:-translate-x-2" />
+      Back to home
+    </Button>
   );
 }
 

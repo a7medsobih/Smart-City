@@ -2,42 +2,31 @@
 import { Check, Trash2 } from "lucide-react";
 import Button from "../../../../components/Button";
 
-const NotificationActions = ({
-    onMarkAllRead,
-    onClearAll,
-    unreadCount,
-    totalCount
-}) => {
-    const isMarkAllDisabled = unreadCount === 0;
-    const isClearAllDisabled = totalCount === 0;
+const NotificationActions = ({ unreadCount, totalCount, onMarkAllRead, onClearAll }) => {
+    const isMarkDisabled = unreadCount === 0;
+    const isClearDisabled = totalCount === 0;
 
     return (
-        <div className="flex flex-wrap gap-3 mt-16">
+        <div className="flex gap-3">
+            {/* Mark All Read */}
             <Button
                 style="light"
-                className={`flex items-center text-sm !py-1  
-                    ${isMarkAllDisabled
-                        ? "opacity-50 !cursor-not-allowed"
-                        : "hover:bg-gray-100"
-                    }`}
+                disabled={isMarkDisabled}
                 onClick={onMarkAllRead}
-                disabled={isMarkAllDisabled}
+                className={`flex items-center gap-2 !py-1 ${isMarkDisabled && "!opacity-40"}`}
             >
-                <Check className="w-4 mr-2" />
+                <Check size={16} />
                 Mark All Read
             </Button>
 
+            {/* Clear All */}
             <Button
                 style="light"
-                className={`flex items-center text-sm !py-1 !border-red-400 !text-red-600  
-                    ${isClearAllDisabled
-                        ? "opacity-50 !cursor-not-allowed"
-                        : "hover:!bg-red-100"
-                    }`}
+                disabled={isClearDisabled}
                 onClick={onClearAll}
-                disabled={isClearAllDisabled}
+                className={`flex items-center gap-2 !py-1 !border-red-400 !text-red-600 hover:!bg-[#ef4444] hover:!text-white ${isClearDisabled && "!opacity-40"}`}
             >
-                <Trash2 className="w-4 mr-2" />
+                <Trash2 size={16} />
                 Clear All
             </Button>
         </div>

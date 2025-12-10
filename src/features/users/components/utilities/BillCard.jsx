@@ -44,7 +44,7 @@ function BillCard({ bill, onPay }) {
       {/* Pay Button */}
       {!isPaid && (
         <button
-          
+
           onClick={() => onPay?.(bill)}
           className="mt-5 w-full py-1 rounded-xl text-white font-medium shadow-sm bg-gradient-to-r from-amber-400 to-rose-500 hover:cursor-pointer"
         >
