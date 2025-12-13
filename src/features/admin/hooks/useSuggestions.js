@@ -28,6 +28,9 @@ export default function useSuggestions() {
     setSuggestions((prev) =>
       prev.map((s) => (s.id === item.id ? { ...s, status: newStatus } : s))
     );
+
+    // 🔥 Toast Notification
+    toast.success(`Status "${newStatus}"`);
   };
 
   const deleteSuggestion = async (id) => {
