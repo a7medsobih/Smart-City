@@ -25,8 +25,9 @@ const useAdminNotifications = () => {
         setLoading(true);
         try {
             const response = await api.post('/api/admin/notifications', payload);
-            setNotifications(prev => [response.data, ...prev]);
-            return response.data;
+
+            // اسحب الداتا الصح من السيرفر
+            await fetchAllNotifications();
         } catch (error) {
             console.error('❌ Error creating notification:', error);
             throw error;
@@ -36,18 +37,18 @@ const useAdminNotifications = () => {
     };
 
     // حذف إشعار
-    const deleteNotification = async (id) => {
-        setLoading(true);
-        try {
-            await api.delete(`/api/admin/notifications/${id}`);
-            setNotifications(prev => prev.filter(n => n.id !== id));
-        } catch (error) {
-            console.error('❌ Error deleting notification:', error);
-            throw error;
-        } finally {
-            setLoading(false);
-        }
-    };
+    // const deleteNotification = async (id) => {
+    //     setLoading(true);
+    //     try {
+    //         await api.post(`/api/admin/notifications/${id}/delete`);
+    //         setNotifications(prev => prev.filter(n => n.id !== id));
+    //     } catch (error) {
+    //         console.error('❌ Error deleting notification:', error);
+    //         throw error;
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     useEffect(() => {
         fetchAllNotifications();
@@ -71,7 +72,7 @@ const useAdminNotifications = () => {
         apiError,
         fetchAllNotifications,
         createNotification,
-        deleteNotification,
+        // deleteNotification,
         formatDate,
     };
 };

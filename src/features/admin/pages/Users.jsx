@@ -17,7 +17,8 @@ export default function Users() {
   const users = usersQuery.data || [];
 
   const filtered = users.filter((u) =>
-    u.name.toLowerCase().includes(search.toLowerCase())
+    u.name.toLowerCase().includes(search.toLowerCase()) ||
+    u.id.toString().includes(search)
   );
 
   const handleView = (user) => {

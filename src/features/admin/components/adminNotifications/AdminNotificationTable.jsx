@@ -1,6 +1,6 @@
 import AdminNotificationRow from "./AdminNotificationRow";
 
-const AdminNotificationTable = ({ notifications, onDelete, formatDate }) => {
+const AdminNotificationTable = ({ notifications, formatDate }) => {
     if (!notifications.length) {
         return (
             <div className="text-center py-12">
@@ -10,26 +10,36 @@ const AdminNotificationTable = ({ notifications, onDelete, formatDate }) => {
     }
 
     return (
-        <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-                <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Citizen</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Sent</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-                {notifications.map(notification => (
-                    <AdminNotificationRow
-                        key={notification.id}
-                        notification={notification}
-                        onDelete={onDelete}
-                        formatDate={formatDate}
-                    />
-                ))}
-            </tbody>
-        </table>
+        <div className="w-full overflow-x-auto shadow-xl rounded-lg">
+
+            <table className="w-full divide-y divide-primary-light ">
+                <thead className="bg-primary-light/40">
+                    <tr>
+                        <th className="p-4 rounded-tl-lg  text-center text-xs font-semibold text-gray-600 uppercase tracking-wider ">
+                            Citizen
+                        </th>
+                        <th className="p-4  text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Message
+                        </th>
+                        <th className="p-4 rounded-tr-lg  text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Date Sent
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody className="divide-y divide-gray-200 bg-white/60">
+                    {notifications.map((notification) => (
+                        <AdminNotificationRow
+                            key={notification.id}
+                            notification={notification}
+                            formatDate={formatDate}
+                        />
+                    ))}
+                </tbody>
+            </table>
+
+        </div>
+
     );
 };
 
