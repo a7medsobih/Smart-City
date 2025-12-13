@@ -18,10 +18,12 @@ export default function useSuggestions() {
   };
 
   const updateStatus = async (item, newStatus) => {
-    console.log(newStatus);
+    // console.log(newStatus);
     // console.log(item);
     // return
-    await api.put(`/api/admin/suggestions/${item.id}/status`, newStatus);
+    await api.put(`/api/admin/suggestions/${item.id}/status`, {
+      status: newStatus,
+    });
     // await api.put(`/api/admin/suggestions/${item.id}/status`, `${newStatus}`);
     setSuggestions((prev) =>
       prev.map((s) => (s.id === item.id ? { ...s, status: newStatus } : s))
