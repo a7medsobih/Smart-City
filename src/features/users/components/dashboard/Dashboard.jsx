@@ -66,7 +66,7 @@ const Dashboard = () => {
       {/* Quick Actions + Profile */}
       <div className="grid grid-cols-1 lg:grid-cols-3  gap-6 mb-8">
         {/* Quick Actions */}
-        <div className="lg:col-span-2 bg-white shadow-sm rounded-lg p-6">
+        <div className="lg:col-span-3 bg-white shadow-sm rounded-lg p-6">
           <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6">
             ⚡ Quick Actions
           </h3>
